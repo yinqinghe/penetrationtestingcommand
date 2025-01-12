@@ -1,5 +1,4 @@
 import { createWebHashHistory, createRouter } from 'vue-router';
-import MainCommand from '../views/HelloMike.vue'; // 直接引入组件
 // 创建router实例对象，让他去管理我们对应的关系
 // const router = new VueRouter({
 //     // vue-router 默认 hash 模式  当使⽤ history 模式时，URL 就像正常的 url。url去掉了#
@@ -22,7 +21,6 @@ const routes = [
         path: '/',
         redirect: '/attack/Reconnaissance' // 当访问根路径时，自动重定向到 /home
     },
-    { path: '/mike', component: () => MainCommand },
     {
         path: '/attack',
         component: () => import('../views/MainPage'),
