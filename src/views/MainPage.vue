@@ -60,17 +60,93 @@
               <el-menu-item index="3-4-1">item one</el-menu-item>
             </el-sub-menu>
           </el-sub-menu>
+          <el-sub-menu index="4">
+            <template #title>
+              <span>HTB</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="4-1" @click="$router.push('attacktip')"
+                >attack-tip</el-menu-item
+              >
+              <el-menu-item index="4-2">item two</el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
         </el-menu>
       </el-aside>
       <el-container>
-        <el-header>Header</el-header>
+        <el-header
+          style="
+            display: flex;
+            align-items: center;
+            height: 100px;
+            overflow: hidden;
+            border-bottom: 1px solid #e0e0e0;
+          "
+        >
+          <div style="margin-right: 10px; display: flex; align-items: center">
+            <label for="input1" style="flex: 0 0 auto">Local-IP:</label>
+            <el-input
+              v-model="local_ip"
+              placeholder="请输入local_ip"
+            ></el-input>
+          </div>
+
+          <div style="margin-right: 10px; display: flex; align-items: center">
+            <label for="input2" style="flex: 0 0 auto">Attack-IP:</label>
+            <el-input
+              v-model="attack_ip"
+              placeholder="请输入attack_ip"
+            ></el-input>
+          </div>
+
+          <div style="margin-right: 10px; display: flex; align-items: center">
+            <label for="input3" style="flex: 0 0 auto">Attack-Domain:</label>
+            <el-input
+              v-model="attack_domain"
+              placeholder="请输入attack_domain"
+            ></el-input>
+          </div>
+          <el-button type="primary" @click="confirm">确认</el-button>
+        </el-header>
         <el-main><router-view></router-view> </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 <script>
-export default {};
+import { checkSharedData } from "@/utils/utils.js";
+import { mapActions } from "vuex";
+export default {
+  mounted() {
+    const cookieValue = checkSharedData("sharedData"); // 替换为您的 Cookie 名称
+    if (cookieValue) {
+      console.log("读取到的 Cookie 值:", cookieValue["local_ip"]);
+      this.local_ip = cookieValue["local_ip"];
+      this.attack_ip = cookieValue["attack_ip"];
+      this.attack_domain = cookieValue["attack_domain"];
+      this.confirm();
+    }
+  },
+  methods: {
+    ...mapActions(["updateData"]),
+    confirm() {
+      const newData = {
+        local_ip: this.local_ip,
+        attack_ip: this.attack_ip,
+        attack_domain: this.attack_domain,
+      };
+      console.log("===", newData);
+      this.updateData(newData);
+    },
+  },
+  data() {
+    return {
+      local_ip: "",
+      attack_ip: "",
+      attack_domain: "",
+    };
+  },
+};
 </script>
 <style>
 .common-layouts {

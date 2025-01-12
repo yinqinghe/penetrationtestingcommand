@@ -53,9 +53,9 @@ const routes = [
                 component: () => import('../components/HostCommand/fire-wall.vue')
             },
             {
-                path: 'other',
-                name: 'other',
-                component: () => import('../views/HelloMike')
+                path: 'attacktip',
+                name: 'attacktip',
+                component: () => import('../components/HTB/attack-tip.vue')
             }
         ]
     }

@@ -22,12 +22,10 @@
             type="textarea"
             :autosize="{ minRows: 1, maxRows: 5 }"
           >
-            <template #append>
-              <el-button @click="copyToClipboard(command[commandName])"
-                >复制</el-button
-              >
-            </template>
           </el-input>
+          <el-button @click="copyToClipboard(command[commandName])"
+            >复制</el-button
+          >
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -35,42 +33,60 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { mapState } from "vuex";
+import {
+  copyToClipboard,
+  resetCommands,
+  updateCommands,
+} from "@/utils/utils.js";
 export default {
-  setup() {
-    const commands = reactive({
-      "RPC (135,139) ": {
-        rpcclient: "rpcclient -U '' -N XXX",
-        PetitPotam:
-          "python3 PetitPotam.py -d test.local -u john -p password123 10.10.10.2 10.10.10.1",
-        "impacket-services":
-          "python3 services.py test.local/john:password123@XXX list",
-        "impacket-samrdump":
-          "python3 samrdump.py test.local/john:password123@XXX",
-        "impacket-rpcdump":
-          "python3 rpcdump.py test.local/john:password123@XXX",
-        "impacket-lookupsid":
-          "python3 lookupsid.py test.local/john:password123@XXX",
-      },
-      "Kerberos (88)": {
-        用户枚举:
-          "kerbrute userenum --domain domain-test --dc XXX /usr/share/seclists/Usernames/mssql-usernames-nansh0u-guardicore.txt",
-      },
-    });
-
-    return {
-      commands,
-    };
+  computed: {
+    ...mapState(["sharedData"]), // 映射 Vuex state
   },
   methods: {
-    copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(
-        () => {},
-        (err) => {
-          console.error("无法复制文本: ", err);
-        }
-      );
+    async copyToClipboard(text) {
+      const message = await copyToClipboard(text);
+      this.$message.success(message);
     },
+  },
+  watch: {
+    sharedData(newValue) {
+      const storedData = localStorage.getItem("sharedData");
+      if (!storedData || JSON.stringify(newValue) !== storedData) {
+        localStorage.setItem("sharedData", JSON.stringify(newValue));
+        console.log("已更新 sharedData:", newValue);
+      }
+      console.log("共享数据更新:", newValue["local_ip"]); // 当 sharedData 变化时打印数据
+      if (this.attack_ip !== "{{Attack_IP}}") {
+        resetCommands(this.commands, this.attack_ip); // 更新命令
+      }
+      this.attack_ip = newValue["attack_ip"];
+      updateCommands(this.commands, this.attack_ip); // 更新命令
+    },
+  },
+  data() {
+    return {
+      attack_ip: "{{Attack_IP}}", // 使用 data 定义响应式数据
+      commands: {
+        "RPC (135,139) ": {
+          rpcclient: "rpcclient -U '' -N {{Attack_IP}}",
+          PetitPotam:
+            "python3 PetitPotam.py -d test.local -u john -p password123 10.10.10.2 10.10.10.1",
+          "impacket-services":
+            "python3 services.py test.local/john:password123@{{Attack_IP}} list",
+          "impacket-samrdump":
+            "python3 samrdump.py test.local/john:password123@{{Attack_IP}}",
+          "impacket-rpcdump":
+            "python3 rpcdump.py test.local/john:password123@{{Attack_IP}}",
+          "impacket-lookupsid":
+            "python3 lookupsid.py test.local/john:password123@{{Attack_IP}}",
+        },
+        "Kerberos (88)": {
+          用户枚举:
+            "kerbrute userenum --domain domain-test --dc {{Attack_IP}} /usr/share/seclists/Usernames/mssql-usernames-nansh0u-guardicore.txt",
+        },
+      },
+    };
   },
 };
 </script>

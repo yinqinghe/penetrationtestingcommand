@@ -36,8 +36,8 @@
 import { mapState } from "vuex";
 import {
   copyToClipboard,
-  resetCommands,
   updateCommands,
+  resetCommands,
 } from "@/utils/utils.js";
 export default {
   computed: {
@@ -68,38 +68,13 @@ export default {
     return {
       attack_ip: "{{Attack_IP}}", // 使用 data 定义响应式数据
       commands: {
-        nmap: {
-          主机发现: "nmap -sn 192.168.52.0/24",
-          全端口扫描: "nmap --min-rate 10000 -p- {{Attack_IP}}",
-          "TCP SCAN":
-            "nmap -sT --min-rate 1000 -p- {{Attack_IP}} -oA nmapscan/ports",
-          Assist:
-            "grep open nmapscan/ports.nmap | awk -F'/' '{print $1}' | paste -sd ','  \nports=$(grep open nmapscan/ports.nmap | awk -F'/' '{print $1}')",
-          "UDP SCAN": "nmap -sU --top-ports 20 {{Attack_IP}} -OA nmapscan/udp",
-          "Ports detail":
-            "nmap -sT -sV -sC -O -p 80,135,445 {{Attack_IP}} -oA nmapscan/detail",
-          "Ports Vuln Scan":
-            "nmap --script=vuln -p80,135,445 {{Attack_IP}} -oA nmapscan/vuln",
+        SSH: {
+          SSH隧道代理端口转发: "ssh amay@sea.htb -L 8080:127.0.0.1:8080",
+          获取一个更好的终端:
+            "python -c 'import pty; pty.spawn(\"/bin/bash\")'",
         },
       },
     };
   },
 };
 </script>
-
-<style>
-.custom-title {
-  font-size: 1.2em; /* 改变字体大小 */
-  font-weight: bold; /* 加粗字体 */
-}
-.input-container {
-  display: flex;
-  align-items: center; /* 垂直居中对齐 */
-  margin-bottom: 9px;
-}
-
-label {
-  margin-right: 4px;
-  width: 130px;
-}
-</style>
