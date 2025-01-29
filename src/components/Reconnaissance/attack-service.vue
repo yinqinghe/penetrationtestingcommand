@@ -68,6 +68,31 @@ export default {
     return {
       attack_ip: "{{Attack_IP}}", // 使用 data 定义响应式数据
       commands: {
+        "ldap (389)": {
+          批量获取AD用户登录名:
+            'ldapsearch -x -H ldap://10.10.11.45 -D "P.Rosa@vintage.htb" -w "Rosaisbest123" -b "DC=vintage,DC=htb" "(objectClass=user)" sAMAccountName | grep "sAMAccountName:" | cut -d " " -f 2 > usernames.txt ',
+          ldapsearch2:
+            "ldapsearch -x -h {{Attack_IP}} -b 'dc=example,dc=com' -D 'cn=admin,dc=example,dc=com' -w 'password' -s sub '(objectclass=*)' -LLL -E pr=1000/noprompt -z 1 -",
+        },
+        "SMB (139,445) enum": {
+          nmap: "nmap --script smb-vuln* -p 139,445 {{Attack_IP}}",
+          "Enumerate Host": "netexec smb {{Attack_IP}}",
+          "List Shares1":
+            "netexec smb {{Attack_IP}} -u [user] -p [pass] --shares",
+          "List Shares2": "netexec smb {{Attack_IP}} -u guest -p '' --shares",
+          "List Shares3": "smbclient -N -L //{{Attack_IP}}",
+          "Enumerate Files1": "smbclient //{{Attack_IP}}/[share] -N",
+          "Enumerate Files2":
+            "smbclient //{{Attack_IP}}/[share] -U [username] [password]",
+          "Enumerate Files3": "netexec smb -u [user] -p [pass] -M spider_plus",
+          "Enumerate Files4":
+            "smbclient.py '[domain]/[user]:[pass]@[ip/host] -k -no-pass - Kerberos auth",
+          "Enumerate Files5":
+            "manspider.py --threads 256 [IP/CIDR] -u [username] -p [pass] [options]",
+          "User enumeration1": "lookupsid.py guest@{{Attack_IP}} -no-pass",
+          "User enumeration2":
+            "netexec smb {{Attack_IP}} -u guest -p '' --rid-brute",
+        },
         "RPC (135,139) ": {
           rpcclient: "rpcclient -U '' -N {{Attack_IP}}",
           PetitPotam:

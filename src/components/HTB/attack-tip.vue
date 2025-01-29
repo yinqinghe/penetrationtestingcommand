@@ -70,6 +70,8 @@ export default {
       commands: {
         SSH: {
           SSH隧道代理端口转发: "ssh amay@sea.htb -L 8080:127.0.0.1:8080",
+          SSH上传文件:
+            "sshpass -p SuperDuperPass123 scp CVE-2023-0386-main.zip admin@2million.htb:/home/admin/tmp",
           获取一个更好的终端:
             "python -c 'import pty; pty.spawn(\"/bin/bash\")'",
         },

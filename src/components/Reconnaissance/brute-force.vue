@@ -95,6 +95,8 @@ export default {
             "feroxbuster -u http://{{Attack_IP}} -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-big.txt",
           跳过TLS认证:
             "feroxbuster -u http://{{Attack_IP}} -x php -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories-lowercase.txt -k",
+          指定文件后缀:
+            "feroxbuster -u http://{{Attack_IP}} -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-big.txt -x php,aspx",
         },
         wfuzz: {
           隐藏特定的chars:

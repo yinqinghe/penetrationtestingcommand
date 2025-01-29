@@ -2,32 +2,30 @@
   <div class="demo-collapse">
     <el-collapse v-model="activeNames" @change="handleChange" accordion>
       <el-collapse-item
-        v-for="(tool, index) in commands"
+        v-for="(command, key_c, index) in commands"
         :key="index"
         :name="index + 1"
       >
         <template #title>
-          <span class="custom-title">{{ tool.title }}</span>
+          <span class="custom-title">{{ key_c }}</span>
         </template>
         <div
-          v-for="(command, key) in tool.commandContent"
-          :key="key"
+          v-for="(commandContent, commandName) in command"
+          :key="commandName"
           class="input-container"
         >
-          <label :for="key">{{ key }}:</label>
+          <label :for="key">{{ commandName }}:</label>
           <el-input
             :id="key"
-            v-model="tool.commandContent[key]"
+            v-model="command[commandName]"
             readonly
             type="textarea"
             :autosize="{ minRows: 1, maxRows: 5 }"
           >
-            <template #append>
-              <el-button @click="copyToClipboard(tool.commandContent[key])"
-                >复制</el-button
-              >
-            </template>
           </el-input>
+          <el-button @click="copyToClipboard(command[commandName])"
+            >复制</el-button
+          >
         </div>
       </el-collapse-item>
     </el-collapse>

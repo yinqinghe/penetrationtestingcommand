@@ -44,7 +44,7 @@
               >
             </el-menu-item-group>
           </el-sub-menu>
-          <el-sub-menu index="3" @click="$router.push('other')">
+          <el-sub-menu index="3">
             <template #title>
               <span>权限提升</span>
             </template>
@@ -69,6 +69,19 @@
                 >attack-tip</el-menu-item
               >
               <el-menu-item index="4-2">item two</el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
+          <el-sub-menu index="5">
+            <template #title>
+              <span>内网渗透</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item
+                index="5-1"
+                @click="$router.push('domainpenetration')"
+                >域渗透</el-menu-item
+              >
+              <el-menu-item index="5-2">item two</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
         </el-menu>

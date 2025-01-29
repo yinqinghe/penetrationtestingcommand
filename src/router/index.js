@@ -54,6 +54,11 @@ const routes = [
                 path: 'attacktip',
                 name: 'attacktip',
                 component: () => import('../components/HTB/attack-tip.vue')
+            },
+            {
+                path: 'domainpenetration',
+                name: 'domainpenetration',
+                component: () => import('../components/InternalNetwork/domain-penetration.vue')
             }
         ]
     }
