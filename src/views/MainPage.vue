@@ -49,16 +49,12 @@
               <span>权限提升</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="3-1">Brute</el-menu-item>
-              <el-menu-item index="3-2">item two</el-menu-item>
+              <el-menu-item
+                index="3-1"
+                @click="$router.push('privilegeescalation')"
+                >Privilege Escalation</el-menu-item
+              >
             </el-menu-item-group>
-            <el-menu-item-group>
-              <el-menu-item index="3-3">item three</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="3-4">
-              <template #title>item four</template>
-              <el-menu-item index="3-4-1">item one</el-menu-item>
-            </el-sub-menu>
           </el-sub-menu>
           <el-sub-menu index="4">
             <template #title>
@@ -82,6 +78,16 @@
                 >域渗透</el-menu-item
               >
               <el-menu-item index="5-2">item two</el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
+          <el-sub-menu index="6">
+            <template #title>
+              <span>应急响应</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="6-1" @click="$router.push('dfir')"
+                >DFIR</el-menu-item
+              >
             </el-menu-item-group>
           </el-sub-menu>
         </el-menu>

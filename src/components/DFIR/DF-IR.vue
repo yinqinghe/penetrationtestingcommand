@@ -7,7 +7,14 @@
         :name="index + 1"
       >
         <template #title>
-          <span class="custom-title">{{ key_c }}</span>
+          <span class="custom-title"
+            >{{ key_c }}
+            <el-icon class="header-icon">
+              <a :href="Links[key_c]" target="_blank" :title="Links[key_c]">
+                <info-filled />
+              </a>
+            </el-icon>
+          </span>
         </template>
         <div
           v-for="(commandContent, commandName) in command"
@@ -33,6 +40,7 @@
 </template>
 
 <script>
+import { InfoFilled } from "@element-plus/icons-vue";
 import { mapState } from "vuex";
 import {
   copyToClipboard,
@@ -40,6 +48,9 @@ import {
   updateCommands,
 } from "@/utils/utils.js";
 export default {
+  components: {
+    "info-filled": InfoFilled,
+  },
   computed: {
     ...mapState(["sharedData"]), // 映射 Vuex state
   },
@@ -69,16 +80,14 @@ export default {
       attack_ip: "{{Attack_IP}}", // 使用 data 定义响应式数据
       commands: {
         "MFTECmd.exe": {
+          解析MFT文件夹: "MFTECmd.exe -d $MFT --csv ./ --csvf mft.csv",
           解析MFT文件: "MFTECmd.exe -f $MFT --csv ./ --csvf mft.csv",
-        },
-        "MFTExplorer.exe": {
-          解析MFT文件: "MFTExplorer.exe -f $MFT --csv ./ --csvf mft.csv",
         },
         "PECmd.exe": {
           解析PF文件夹:
             "PECmd.exe -d D:\\Download\\Compressed\\SneakyCookies\\TRIAGE-L3-BELLS\\C\\Windows\\prefetch --csv . --csvf prefetch_.csv",
           解析PF文件:
-            "PECmd.exe -f D:\\Download\\Compressed\\SneakyCookies\\TRIAGE-L3-BELLS\\C\\Windows\\prefetch --csv . --csvf prefetch_.csv",
+            "PECmd.exe -f D:\\Download\\Compressed\\SneakyCookies\\TRIAGE-L3-BELLS\\C\\Windows\\prefetch\\tmp.pf --csv . --csvf prefetch_.csv",
         },
         "LECmd.exe": {
           解析lnk文件:
@@ -88,11 +97,15 @@ export default {
           "解析evtx文件夹(admin权限)":
             'EvtxECmd.exe -d "location of .evtx dir" --csv . --csvf result.csv',
           解析evtx文件:
-            'EvtxECmd.exe -f "location of .evtx file" --csv "location where you want to save the file" --csvf result.csv',
+            'EvtxECmd.exe -f "location of .evtx file" --csv . --csvf result.csv',
           解析单个文件toJSON:
             'EvtxECmd.exe -f "C:\\TempApplication.evtx" --json "c:\\tempjsonout.csv"',
           只特定事件ID:
             'EvtxECmd.exe -f "C:\\Security.evtx" --csv . --csvf Example.csv --inc 5379',
+        },
+        "RLA.exe": {
+          "解析Replay transaction logs文件": 'rla.exe -f ".LOG1" --out .',
+          "解析Replay transaction logs文件夹": 'rla.exe -d "D:\temp" --out .',
         },
         "KAPE(admin权限)": {
           "RegistryHives(admin权限)":
@@ -100,8 +113,12 @@ export default {
           "解析文件夹(admin权限)":
             'kape.exe --msource "D:\\TRIAGE-L3-BELLS" --module !EZParser --mdest "D:\\tmp" --trace --debug',
         },
+        chainsaw: {
+          解析hve文件:
+            "chainsaw dump C/Windows/System32/config/SYSTEM.hve -j -o systemhve.json",
+        },
       },
-      Link: {
+      Links: {
         "PECmd.exe": "https://github.com/EricZimmerman/PECmd",
         "MFTExplorer.exe":
           "https://download.ericzimmermanstools.com/net6/MFTExplorer.zip",
@@ -116,10 +133,12 @@ export default {
           "https://github.com/EricZimmerman/evtx",
         ],
         "SysTools VHDX Viewer ": "https://www.systoolsgroup.com/vhdx/viewer/",
+        "RLA.exe": "https://download.ericzimmermanstools.com/net9/rla.zip",
         AccessData_FTK_Imager:
           "https://www.exterro.com/ftk-product-downloads/ftk-imager-4-7-3-81",
         other: "https://ericzimmerman.github.io/#!index.md",
         pentest: "https://github.com/enaqx/awesome-pentest",
+        Fastir_Collector: "https://github.com/SekoiaLab/Fastir_Collector",
       },
     };
   },

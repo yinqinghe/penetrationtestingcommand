@@ -59,6 +59,16 @@ const routes = [
                 path: 'domainpenetration',
                 name: 'domainpenetration',
                 component: () => import('../components/InternalNetwork/domain-penetration.vue')
+            },
+             {
+                path: 'dfir',
+                name: 'dfir',
+                component: () => import('../components/DFIR/DF-IR.vue')
+            },
+              {
+                path: 'privilegeescalation',
+                name: 'privilegeescalation',
+                component: () => import('../components/PrivilegeEscalation/privilege-escalation.vue')
             }
         ]
     }
